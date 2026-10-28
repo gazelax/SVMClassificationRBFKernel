@@ -10,7 +10,13 @@ Y_train = Y(training(cv), :);
 X_test = X(test(cv), :);
 Y_test = Y(test(cv), :);
 %% Trenowanie modelu klasyfikacyjnego
-svmModel = fitcsvm(X_train, Y_train,  'KernelFunction', 'rbf','Standardize', true,  'KernelScale', 'auto');
-    
-    
+svmModel = fitcsvm(X_train, Y_train,  'KernelFunction', 'rbf','Standardize', ...
+    true,  'KernelScale', 'auto');
+%% Ocena modelu na zbiorze testowym
+Y_pred = predict(svmModel, X_test);
+dokladnosc = sum(Y_pred == Y_test) / length(Y_test) * 100;
+fprintf('Dokładność na zbiorze testowym: %.2f%%\n', dokladnosc);
+figure;
+confusionchart(Y_test, Y_pred);
+title('Macierz pomyłek');
    
